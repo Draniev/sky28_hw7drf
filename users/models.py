@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
+from materials.models import Course, Lesson
+
 
 class CustomUserManager(BaseUserManager):
     """
@@ -48,3 +50,18 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
     objects = CustomUserManager()
+
+
+class Payment(models.Model):
+    class PaymentMethod(models.TextChoices):
+        CASH = ('cash', 'Cash Payment')
+        BANK = ('bank', 'Bank Transfer')
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payments')
+    payment_date = models.DateField(auto_now_add=True)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='course', null=True, blank=True)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='lesson', null=True, blank=True)
+    amount = models.DecimalField(max_digits=4, decimal_places=2)
+    method = models.CharField(max_length=4, choices=PaymentMethod, default=PaymentMethod.CASH)
+
+

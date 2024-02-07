@@ -1,0 +1,100 @@
+[
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$5gdElj4hRhih3DKI0TDD2s$eb2BA0T70OFeodlBRfRqp4hU2t9eBZaCk182/hNqem4=",
+      "last_login": "2024-02-07T12:35:10.129Z",
+      "is_superuser": true,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-01-28T18:53:35.192Z",
+      "email": "admin@mail.ru",
+      "first_name": "Sergei",
+      "last_name": "Popov",
+      "phone": "",
+      "image": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$N47KQhs7vsVjvVDslxqOmS$kkn2h7os6ETuLVDfINt8IG60S3nktlnTgogZ6veisQU=",
+      "last_login": null,
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-01-28T19:03:49.966Z",
+      "email": "test@test.ru",
+      "first_name": "",
+      "last_name": "",
+      "phone": null,
+      "image": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "payment_date": "2024-02-07",
+      "course": 1,
+      "lesson": null,
+      "amount": "20.05",
+      "method": "cash"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "payment_date": "2024-02-07",
+      "course": 1,
+      "lesson": null,
+      "amount": "15.05",
+      "method": "cash"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 4,
+    "fields": {
+      "user": 3,
+      "payment_date": "2024-02-07",
+      "course": 2,
+      "lesson": null,
+      "amount": "25.05",
+      "method": "cash"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 5,
+    "fields": {
+      "user": 3,
+      "payment_date": "2024-02-07",
+      "course": null,
+      "lesson": 5,
+      "amount": "5.05",
+      "method": "cash"
+    }
+  },
+  {
+    "model": "users.payment",
+    "pk": 6,
+    "fields": {
+      "user": 3,
+      "payment_date": "2024-02-07",
+      "course": null,
+      "lesson": 6,
+      "amount": "5.05",
+      "method": "cash"
+    }
+  }
+]

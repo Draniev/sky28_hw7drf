@@ -1,0 +1,95 @@
+[
+  {
+    "model": "materials.course",
+    "pk": 1,
+    "fields": {
+      "name": "Тестовый курс",
+      "description": "Бадабум! На этом курсе вы пройдёте то и сё и вообще всё это!",
+      "avatar": ""
+    }
+  },
+  {
+    "model": "materials.course",
+    "pk": 2,
+    "fields": {
+      "name": "Второй тестовый курс",
+      "description": "В этом курсе тоже будем болтать ни о чём. Но стоит он 100500 денег!",
+      "avatar": ""
+    }
+  },
+  {
+    "model": "materials.course",
+    "pk": 3,
+    "fields": {
+      "name": "Урок для платного курса 4",
+      "description": "Очень ценный четвертый урок",
+      "avatar": ""
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 1,
+    "fields": {
+      "name": "Первый тестовый урок",
+      "description": "Тут мы будем долго болтать на пространные темы",
+      "avatar": "",
+      "video": "https://ya.ru/1",
+      "course": 1
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 2,
+    "fields": {
+      "name": "Второй тестовый урок",
+      "description": "Будем тут продолжать беседу ни о чём но с важным видом",
+      "avatar": "",
+      "video": "https://ya.ru/2",
+      "course": 1
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 3,
+    "fields": {
+      "name": "Урок для платного курса",
+      "description": "Очень ценный вводный урок",
+      "avatar": "",
+      "video": "https://ya.ru/",
+      "course": 2
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 4,
+    "fields": {
+      "name": "Урок для платного курса 2",
+      "description": "Очень ценный второй урок",
+      "avatar": "",
+      "video": "https://ya.ru/",
+      "course": 2
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 5,
+    "fields": {
+      "name": "Урок для платного курса 3",
+      "description": "Очень ценный третий урок",
+      "avatar": "",
+      "video": "https://ya.ru/",
+      "course": 2
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 6,
+    "fields": {
+      "name": "Урок для платного курса 4",
+      "description": "Очень ценный четвертый урок",
+      "avatar": "",
+      "video": "https://ya.ru/",
+      "course": 2
+    }
+  }
+]

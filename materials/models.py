@@ -13,4 +13,4 @@ class Lesson(models.Model):
     description = models.CharField(max_length=4096, verbose_name='Описание')
     avatar = models.ImageField(blank=True, null=True, upload_to='lessons_avatars/')
     video = models.URLField(verbose_name='Видео')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
