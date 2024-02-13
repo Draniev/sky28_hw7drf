@@ -1,15 +1,23 @@
 from rest_framework import viewsets, generics
 from rest_framework.generics import CreateAPIView, DestroyAPIView
+from rest_framework.pagination import PageNumberPagination
 
 from .models import Course, Lesson, CourseSubscription
 from .permissions import OwnerOrCheckDjangoPermissions
 from .serializers import CourseSerializer, LessonSerializer, CourseSubscriptionSerializer
 
 
+class Paginator(PageNumberPagination):
+    page_size = 10  # Количество элементов на странице
+    page_size_query_param = 'page_size'  # Параметр запроса для указания количества элементов на странице
+    max_page_size = 100  # Максимальное количество элементов на странице
+
+
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     permission_classes = (OwnerOrCheckDjangoPermissions, )
+    pagination_class = Paginator
 
     def get_queryset(self):
         if self.request.user.groups.filter(name='Moderators').exists():
@@ -24,6 +32,7 @@ class LessonListCreateView(generics.ListCreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = (OwnerOrCheckDjangoPermissions, )
+    pagination_class = Paginator
 
     def get_queryset(self):
         if self.request.user.groups.filter(name='moderator').exists():
