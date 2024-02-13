@@ -22,6 +22,11 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = '__all__'
 
+    def create(self, validated_data):
+        user = self.context['request'].user
+        course = Course.objects.create(owner=user, **validated_data)
+        return course
+
     def get_lessons_qty(self, obj):
         return obj.lessons.count()
 

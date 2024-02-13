@@ -1,6 +1,7 @@
 from rest_framework import viewsets, generics
 from rest_framework.generics import CreateAPIView, DestroyAPIView
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
 from .models import Course, Lesson, CourseSubscription
 from .permissions import OwnerOrCheckDjangoPermissions
@@ -26,6 +27,7 @@ class CourseViewSet(viewsets.ModelViewSet):
         else:
             # Filter courses by owner for other users
             return Course.objects.filter(owner=self.request.user)
+            # return Course.objects.all()
 
 
 class LessonListCreateView(generics.ListCreateAPIView):
@@ -63,13 +65,12 @@ class LessonRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 class CourseSubscriptionCreateView(CreateAPIView):
     queryset = CourseSubscription.objects.all()
     serializer_class = CourseSubscriptionSerializer
-    # permission_classes = [IsAuthenticated]
 
 
 class CourseSubscriptionDestroyView(DestroyAPIView):
     queryset = CourseSubscription.objects.all()
     serializer_class = CourseSubscriptionSerializer
-    permission_classes = [OwnerOrCheckDjangoPermissions]
+    # permission_classes = [OwnerOrCheckDjangoPermissions]
 
     def get_object(self):
         queryset = self.get_queryset()
