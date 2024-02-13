@@ -1,8 +1,9 @@
 from rest_framework import viewsets, generics
+from rest_framework.generics import CreateAPIView, DestroyAPIView
 
-from .models import Course, Lesson
+from .models import Course, Lesson, CourseSubscription
 from .permissions import OwnerOrCheckDjangoPermissions
-from .serializers import CourseSerializer, LessonSerializer
+from .serializers import CourseSerializer, LessonSerializer, CourseSubscriptionSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -48,3 +49,20 @@ class LessonRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         else:
             # Filter lessons by owner for other users
             return Lesson.objects.filter(owner=self.request.user)
+
+
+class CourseSubscriptionCreateView(CreateAPIView):
+    queryset = CourseSubscription.objects.all()
+    serializer_class = CourseSubscriptionSerializer
+    # permission_classes = [IsAuthenticated]
+
+
+class CourseSubscriptionDestroyView(DestroyAPIView):
+    queryset = CourseSubscription.objects.all()
+    serializer_class = CourseSubscriptionSerializer
+    permission_classes = [OwnerOrCheckDjangoPermissions]
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = queryset.filter(user=self.request.user, course_id=self.kwargs['course_id']).first()
+        return obj

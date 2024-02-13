@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from config import settings
@@ -21,3 +22,19 @@ class Lesson(models.Model):
     video = models.URLField(verbose_name='Видео')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
     owner = models.ForeignKey(User, related_name='lessons', on_delete=models.PROTECT, null=True, blank=True)
+
+
+class CourseSubscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'course')
+
+    def clean(self):
+        # Custom validation to ensure a user cannot subscribe to the same course multiple times
+        if CourseSubscription.objects.filter(user=self.user, course=self.course).exists():
+            raise ValidationError('User is already subscribed to this course.')
+
+

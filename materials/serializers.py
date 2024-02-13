@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from .models import Course, Lesson
+from .models import Course, Lesson, CourseSubscription
 from .validators import CheckVideoUrlValidator
 
 
@@ -15,6 +15,8 @@ class LessonSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     lessons_qty = SerializerMethodField(read_only=True)
     lessons = LessonSerializer(read_only=True, many=True)
+    subscribed = SerializerMethodField(read_only=True)
+
 
     class Meta:
         model = Course
@@ -22,3 +24,21 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def get_lessons_qty(self, obj):
         return obj.lessons.count()
+
+    def get_subscribed(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return CourseSubscription.objects.filter(user=request.user, course=obj).exists()
+        return False
+
+
+class CourseSubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseSubscription
+        fields = '__all__'
+        read_only_fields = ['user']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        subscription = CourseSubscription.objects.create(user=user, **validated_data)
+        return subscription
