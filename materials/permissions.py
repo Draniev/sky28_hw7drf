@@ -8,8 +8,6 @@ class OwnerOrCheckDjangoPermissions(DjangoObjectPermissions):
     def has_permission(self, request, view):
         # Workaround to ensure DjangoModelPermissions are not applied
         # to the root view when using DefaultRouter.
-        print(f'check request.method: {request.method}, '
-              f'request.user.is_authenticated: {request.user.is_authenticated}')
         if request.method in ('POST', 'PUT', 'DELETE', 'PATCH') and request.user.is_authenticated:
             return True
 
@@ -29,9 +27,7 @@ class OwnerOrCheckDjangoPermissions(DjangoObjectPermissions):
         # if request.method == 'POST' and request.user.is_authenticated:
         #     return True
 
-        print(f'obj {obj.owner}')
         if hasattr(obj, 'owner'):
-            print('проверяем аттрибут owner')
             if request.user == obj.owner:
                 return True
         elif hasattr(obj, 'user'):

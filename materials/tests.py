@@ -1,4 +1,4 @@
-from django.test import TestCase
+from rest_framework.test import APITestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
@@ -7,7 +7,7 @@ from materials.models import CourseSubscription, Course, Lesson
 from users.models import User
 
 
-class LessonCRUDTestCase(TestCase):
+class LessonCRUDTestCase(APITestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(
@@ -26,8 +26,7 @@ class LessonCRUDTestCase(TestCase):
         )
 
     def test_CR_lessons(self):
-        client = APIClient()
-        client.force_authenticate(user=self.user)
+        self.client.force_authenticate(user=self.user)
 
         test_data_1 = {
             'name': 'Test lesson 1',
@@ -37,7 +36,7 @@ class LessonCRUDTestCase(TestCase):
         }
 
         initial_count = Lesson.objects.count()
-        response = client.post('/api/lessons/', data=test_data_1, format='json')
+        response = self.client.post('/api/lessons/', data=test_data_1, format='json')
         new_count = Lesson.objects.count()
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -50,31 +49,28 @@ class LessonCRUDTestCase(TestCase):
             'course': self.course.id,
         }
 
-        response = client.post('/api/lessons/', data=test_data_2, format='json')
+        response = self.client.post('/api/lessons/', data=test_data_2, format='json')
         new_count = Lesson.objects.count()
         self.assertEqual(new_count, initial_count + 2)
 
-        response = client.get('/api/lessons/')
+        response = self.client.get('/api/lessons/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        print(f'response len {len(response.json().get("results"))} initial_count {initial_count}')
         self.assertEqual(len(response.json().get("results")), initial_count + 2)
 
     def test_partial_update_lessons(self):
-        client = APIClient()
-        client.force_authenticate(user=self.user)
+        self.client.force_authenticate(user=self.user)
 
         test_data = {
             'name': 'Updated Test lesson',
         }
-        response = client.patch(f'/api/lessons/{self.lesson.id}/',
+        response = self.client.patch(f'/api/lessons/{self.lesson.id}/',
                                 data=test_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response = client.get(f'/api/lessons/{self.lesson.id}/')
+        response = self.client.get(f'/api/lessons/{self.lesson.id}/')
         self.assertEqual(response.json().get("name"), 'Updated Test lesson')
 
     def test_update_lessons(self):
-        client = APIClient()
-        client.force_authenticate(user=self.user)
+        self.client.force_authenticate(user=self.user)
 
         test_data = {
             'name': 'Updated Test lesson',
@@ -82,23 +78,22 @@ class LessonCRUDTestCase(TestCase):
             'video': 'https://youtube.com/rsta',
             'course': self.course.id,
         }
-        response = client.patch(f'/api/lessons/{self.lesson.id}/',
+        response = self.client.patch(f'/api/lessons/{self.lesson.id}/',
                                 data=test_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response = client.get(f'/api/lessons/{self.lesson.id}/')
+        response = self.client.get(f'/api/lessons/{self.lesson.id}/')
         self.assertEqual(response.json().get("name"), 'Updated Test lesson')
         self.assertEqual(response.json().get("description"), 'Updated Test lesson description')
 
     def test_delete_lessons(self):
-        client = APIClient()
-        client.force_authenticate(user=self.user)
+        self.client.force_authenticate(user=self.user)
         initial_count = Lesson.objects.count()
-        response = client.delete(f'/api/lessons/{self.lesson.id}/')
+        response = self.client.delete(f'/api/lessons/{self.lesson.id}/')
         new_count =  Lesson.objects.count()
         self.assertEqual(new_count, initial_count - 1)
 
 
-class CourseSubscriptionTestCase(TestCase):
+class CourseSubscriptionTestCase(APITestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(
@@ -110,27 +105,25 @@ class CourseSubscriptionTestCase(TestCase):
         )
 
     def test_create_subscription(self):
-        client = APIClient()
-        client.force_authenticate(user=self.user)
+        self.client.force_authenticate(user=self.user)
 
         test_data = {
             'course': self.course.id,
         }
 
         initial_count = CourseSubscription.objects.count()
-        response = client.post('/api/subscriptions/', data=test_data, format='json')
+        response = self.client.post('/api/subscriptions/', data=test_data, format='json')
         new_count = CourseSubscription.objects.count()
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(new_count, initial_count + 1)
 
     def test_delete_subscription(self):
-        client = APIClient()
-        client.force_authenticate(user=self.user)
+        self.client.force_authenticate(user=self.user)
         subscription = CourseSubscription.objects.create(user=self.user, course=self.course)
 
         initial_count = CourseSubscription.objects.count()
-        response = client.delete(f'/api/subscriptions/{self.course.id}/')
+        response = self.client.delete(f'/api/subscriptions/{self.course.id}/')
         new_count = CourseSubscription.objects.count()
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
