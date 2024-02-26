@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import User
+from .models import User, Payment
 
 
 class CustomUserAdmin(UserAdmin):
@@ -24,4 +24,9 @@ class CustomUserAdmin(UserAdmin):
     ordering = ('email',)
 
 
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'payment_date', 'course', 'lesson', 'amount', 'method')
+
+
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Payment, PaymentAdmin)

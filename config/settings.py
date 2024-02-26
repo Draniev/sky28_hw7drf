@@ -21,6 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-5jagi34b2q@*$9(lrnra^f(@wvxe!zkw9g@yg!_7&3q9r0l#xo'
+STRIPE_API_KEY = 'sk_test_rfaBmNUu1lWB7VZ0MMSIsYjH'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,9 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters',
+    'drf_yasg',
 
     'users',
     'materials',
@@ -54,6 +57,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -158,3 +163,9 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',  # Замените на адрес вашего фронтенд-сервера
+]
+
+CORS_ALLOW_ALL_ORIGINS = False
