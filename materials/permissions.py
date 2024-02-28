@@ -1,4 +1,4 @@
-from rest_framework.permissions import DjangoModelPermissions, SAFE_METHODS, DjangoObjectPermissions
+from rest_framework.permissions import SAFE_METHODS, DjangoObjectPermissions
 
 
 class OwnerOrCheckDjangoPermissions(DjangoObjectPermissions):

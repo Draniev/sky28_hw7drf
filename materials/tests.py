@@ -1,9 +1,7 @@
-from rest_framework.test import APITestCase
 from rest_framework import status
-from rest_framework.test import APIClient
+from rest_framework.test import APITestCase
 
-
-from materials.models import CourseSubscription, Course, Lesson
+from materials.models import Course, CourseSubscription, Lesson
 from users.models import User
 
 
@@ -36,7 +34,8 @@ class LessonCRUDTestCase(APITestCase):
         }
 
         initial_count = Lesson.objects.count()
-        response = self.client.post('/api/lessons/', data=test_data_1, format='json')
+        response = self.client.post(
+            '/api/lessons/', data=test_data_1, format='json')
         new_count = Lesson.objects.count()
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -49,13 +48,15 @@ class LessonCRUDTestCase(APITestCase):
             'course': self.course.id,
         }
 
-        response = self.client.post('/api/lessons/', data=test_data_2, format='json')
+        response = self.client.post(
+            '/api/lessons/', data=test_data_2, format='json')
         new_count = Lesson.objects.count()
         self.assertEqual(new_count, initial_count + 2)
 
         response = self.client.get('/api/lessons/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.json().get("results")), initial_count + 2)
+        self.assertEqual(len(response.json().get("results")),
+                         initial_count + 2)
 
     def test_partial_update_lessons(self):
         self.client.force_authenticate(user=self.user)
@@ -64,7 +65,7 @@ class LessonCRUDTestCase(APITestCase):
             'name': 'Updated Test lesson',
         }
         response = self.client.patch(f'/api/lessons/{self.lesson.id}/',
-                                data=test_data, format='json')
+                                     data=test_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response = self.client.get(f'/api/lessons/{self.lesson.id}/')
         self.assertEqual(response.json().get("name"), 'Updated Test lesson')
@@ -79,17 +80,18 @@ class LessonCRUDTestCase(APITestCase):
             'course': self.course.id,
         }
         response = self.client.patch(f'/api/lessons/{self.lesson.id}/',
-                                data=test_data, format='json')
+                                     data=test_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response = self.client.get(f'/api/lessons/{self.lesson.id}/')
         self.assertEqual(response.json().get("name"), 'Updated Test lesson')
-        self.assertEqual(response.json().get("description"), 'Updated Test lesson description')
+        self.assertEqual(response.json().get("description"),
+                         'Updated Test lesson description')
 
     def test_delete_lessons(self):
         self.client.force_authenticate(user=self.user)
         initial_count = Lesson.objects.count()
         response = self.client.delete(f'/api/lessons/{self.lesson.id}/')
-        new_count =  Lesson.objects.count()
+        new_count = Lesson.objects.count()
         self.assertEqual(new_count, initial_count - 1)
 
 
@@ -112,7 +114,8 @@ class CourseSubscriptionTestCase(APITestCase):
         }
 
         initial_count = CourseSubscription.objects.count()
-        response = self.client.post('/api/subscriptions/', data=test_data, format='json')
+        response = self.client.post(
+            '/api/subscriptions/', data=test_data, format='json')
         new_count = CourseSubscription.objects.count()
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -120,7 +123,8 @@ class CourseSubscriptionTestCase(APITestCase):
 
     def test_delete_subscription(self):
         self.client.force_authenticate(user=self.user)
-        subscription = CourseSubscription.objects.create(user=self.user, course=self.course)
+        subscription = CourseSubscription.objects.create(
+            user=self.user, course=self.course)
 
         initial_count = CourseSubscription.objects.count()
         response = self.client.delete(f'/api/subscriptions/{self.course.id}/')

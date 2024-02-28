@@ -63,5 +63,3 @@ class Payment(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='lesson', null=True, blank=True)
     amount = models.DecimalField(max_digits=4, decimal_places=2)
     method = models.CharField(max_length=4, choices=PaymentMethod, default=PaymentMethod.CASH)
-
-

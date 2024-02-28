@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -36,5 +35,3 @@ class CourseSubscription(models.Model):
         # Custom validation to ensure a user cannot subscribe to the same course multiple times
         if CourseSubscription.objects.filter(user=self.user, course=self.course).exists():
             raise ValidationError('User is already subscribed to this course.')
-
-

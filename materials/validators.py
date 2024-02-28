@@ -13,4 +13,3 @@ class CheckVideoUrlValidator:
             x = re.search(r"^https://youtube.com/[A-Za-z0-9\=\?]+", video_url)
             if not x:
                 raise ValidationError("Надо загружать с Ютуба!")
-

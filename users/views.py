@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.filters import OrderingFilter
 from rest_framework.generics import ListAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 
 from users.models import Payment

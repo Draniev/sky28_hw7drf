@@ -8,6 +8,5 @@ class OwnerOrReadOnly(permissions.BasePermission):
         Return `True` if permission is granted, `False` otherwise.
         """
         return bool(
-            request.method in SAFE_METHODS or
-            request.user == obj
+            request.method in SAFE_METHODS or request.user == obj
         )

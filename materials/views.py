@@ -1,7 +1,6 @@
 from rest_framework import viewsets, generics
 from rest_framework.generics import CreateAPIView, DestroyAPIView
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
 from .models import Course, Lesson, CourseSubscription
 from .permissions import OwnerOrCheckDjangoPermissions
