@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 
+from celery.schedules import crontab
+
 from config.load_env import EMAIL_USER, EMAIL_PASSWORD, STRIPE_API, SECRET, DB_NAME, DB_USER, DB_PASSWORD
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -191,3 +193,10 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 # CELERY_TIMEZONE = "Australia/Tasmania"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_BEAT_SCHEDULE = {
+    'check_user_last_visit': {
+        'task': 'check_user',
+        'schedule': crontab(minute=0, hour=12),
+    },
+}

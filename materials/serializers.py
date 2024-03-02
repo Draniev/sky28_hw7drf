@@ -3,6 +3,7 @@ from rest_framework.fields import SerializerMethodField
 
 from .models import Course, Lesson, CourseSubscription
 from .validators import CheckVideoUrlValidator
+from .tasks import notification_of_changes
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -24,6 +25,12 @@ class CourseSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context['request'].user
         course = Course.objects.create(owner=user, **validated_data)
+        return course
+
+    def save(self, **kwargs):
+        course = super().save(**kwargs)
+        if self.instance.pk:  # Check if instance exists (updated)
+            notification_of_changes.delay(course)
         return course
 
     def get_lessons_qty(self, obj):
