@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 
+from config.load_env import EMAIL_USER, EMAIL_PASSWORD, STRIPE_API, SECRET, DB_NAME, DB_USER, DB_PASSWORD
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,8 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5jagi34b2q@*$9(lrnra^f(@wvxe!zkw9g@yg!_7&3q9r0l#xo'
-STRIPE_API_KEY = 'sk_test_rfaBmNUu1lWB7VZ0MMSIsYjH'
+SECRET_KEY = SECRET
+STRIPE_API_KEY = STRIPE_API
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -88,9 +90,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',  # Название БД
-        'USER': 'postgres',  # Пользователь для подключения
-        'PASSWORD': 'postgres',  # Пароль для этого пользователя
+        'NAME': DB_NAME,  # Название БД
+        'USER': DB_USER,  # Пользователь для подключения
+        'PASSWORD': DB_PASSWORD,  # Пароль для этого пользователя
         'HOST': '127.0.0.1',  # Адрес, на котором развернут сервер БД
         'PORT': 5432,  # Порт, на котором работает сервер БД
     }
@@ -169,3 +171,14 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+
+EMAIL_HOST_USER = EMAIL_USER
+DEFAULT_FROM_EMAIL = EMAIL_USER
+SERVER_EMAIL = EMAIL_USER
+EMAIL_ADMIN = EMAIL_USER
+EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
