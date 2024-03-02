@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'drf_yasg',
+    'django_celery_beat',
 
     'users',
     'materials',
@@ -182,3 +183,11 @@ DEFAULT_FROM_EMAIL = EMAIL_USER
 SERVER_EMAIL = EMAIL_USER
 EMAIL_ADMIN = EMAIL_USER
 EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+# Default timezone: "UTC" !
+# CELERY_TIMEZONE = "Australia/Tasmania"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60

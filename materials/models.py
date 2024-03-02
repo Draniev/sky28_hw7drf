@@ -13,6 +13,13 @@ class Course(models.Model):
     avatar = models.ImageField(blank=True, null=True, upload_to='courses_avatars/')
     owner = models.ForeignKey(User, related_name='courses', on_delete=models.PROTECT, null=True, blank=True)
 
+    def __str__(self):
+        if self.owner:
+            author = self.owner.email
+        else:
+            author = 'GOD'
+        return f'Course: "{self.name}" from {author}'
+
 
 class Lesson(models.Model):
     name = models.CharField(max_length=255, verbose_name='Название')
@@ -21,6 +28,13 @@ class Lesson(models.Model):
     video = models.URLField(verbose_name='Видео')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
     owner = models.ForeignKey(User, related_name='lessons', on_delete=models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        if self.owner:
+            author = self.owner.email
+        else:
+            author = 'GOD'
+        return f'Lesson: "{self.name}" from {author}'
 
 
 class CourseSubscription(models.Model):
@@ -35,3 +49,6 @@ class CourseSubscription(models.Model):
         # Custom validation to ensure a user cannot subscribe to the same course multiple times
         if CourseSubscription.objects.filter(user=self.user, course=self.course).exists():
             raise ValidationError('User is already subscribed to this course.')
+
+    def __str__(self):
+        return f'user {self.user.email} is on {self.course.name}'
