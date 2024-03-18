@@ -14,7 +14,8 @@ from pathlib import Path
 
 from celery.schedules import crontab
 
-from config.load_env import EMAIL_USER, EMAIL_PASSWORD, STRIPE_API, SECRET, DB_NAME, DB_USER, DB_PASSWORD
+from config.load_env import EMAIL_USER, EMAIL_PASSWORD, STRIPE_API, SECRET, DB_NAME, DB_USER, DB_PASSWORD, REDIS_HOST, \
+    DB_HOST
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,12 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_celery_beat',
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters',
     'drf_yasg',
-    'django_celery_beat',
 
     'users',
     'materials',
@@ -96,7 +97,7 @@ DATABASES = {
         'NAME': DB_NAME,  # Название БД
         'USER': DB_USER,  # Пользователь для подключения
         'PASSWORD': DB_PASSWORD,  # Пароль для этого пользователя
-        'HOST': '127.0.0.1',  # Адрес, на котором развернут сервер БД
+        'HOST': DB_HOST,  # Адрес, на котором развернут сервер БД
         'PORT': 5432,  # Порт, на котором работает сервер БД
     }
 }
@@ -187,8 +188,8 @@ EMAIL_ADMIN = EMAIL_USER
 EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
 
 
-CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_URL = f'redis://{REDIS_HOST}:6379'
+CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:6379'
 # Default timezone: "UTC" !
 # CELERY_TIMEZONE = "Australia/Tasmania"
 CELERY_TASK_TRACK_STARTED = True

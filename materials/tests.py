@@ -9,7 +9,7 @@ class LessonCRUDTestCase(APITestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(
-            email='testuser@test.ru', password='password123'
+            email='testuser@test.ru', password=' '
         )
         self.course = Course.objects.create(
             name='Test Course', description='Test Description',
